@@ -10,6 +10,8 @@
 
 import type * as alerts from "../alerts.js";
 import type * as auth from "../auth.js";
+import type * as batches from "../batches.js";
+import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as inventory from "../inventory.js";
 import type * as items from "../items.js";
@@ -25,6 +27,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   alerts: typeof alerts;
   auth: typeof auth;
+  batches: typeof batches;
+  crons: typeof crons;
   http: typeof http;
   inventory: typeof inventory;
   items: typeof items;

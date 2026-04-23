@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/Button";
 import HistoryTab from "@/components/inventory/HistoryTab";
+import BatchesTab from "@/components/expiry/BatchesTab";
 import { useItemById, useUpdateItem, useArchiveItem } from "@/hooks/useItems";
 import { useToast, ToastContainer } from "@/components/ui/Toast";
 import { categoryLabels } from "@/convex/seed/commonItems";
@@ -35,12 +36,14 @@ const categoryEmoji: Record<Category, string> = {
 };
 
 /** Tab 定义 */
-type TabKey = "info" | "history";
+type TabKey = "info" | "history" | "batches";
 
-const tabs: { key: TabKey; label: string; emoji: string }[] = [
+const baseTabs: { key: TabKey; label: string; emoji: string }[] = [
   { key: "info", label: "信息", emoji: "📝" },
   { key: "history", label: "历史", emoji: "📋" },
 ];
+
+const batchesTab = { key: "batches" as TabKey, label: "批次", emoji: "📦" };
 
 export default function ItemDetailPage(): React.ReactElement {
   const params = useParams();
@@ -54,7 +57,8 @@ export default function ItemDetailPage(): React.ReactElement {
   const archiveItem = useArchiveItem();
 
   // ── Tab 状态 ──
-  const initialTab = (searchParams.get("tab") === "history" ? "history" : "info") as TabKey;
+  const tabParam = searchParams.get("tab");
+  const initialTab = (tabParam === "history" || tabParam === "batches" ? tabParam : "info") as TabKey;
   const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
 
   // ── 编辑状态 ──
@@ -119,6 +123,9 @@ export default function ItemDetailPage(): React.ReactElement {
       setError("");
     }
   }, [isEditing]);
+
+  // 根据 trackExpiry 动态构建 Tab 列表
+  const tabs = item && item.trackExpiry ? [...baseTabs, batchesTab] : baseTabs;
 
   const inputClass = [
     "w-full",
@@ -413,6 +420,19 @@ export default function ItemDetailPage(): React.ReactElement {
           />
         )}
       </div>
+
+      {item.trackExpiry && (
+        <div
+          id="tabpanel-batches"
+          role="tabpanel"
+          aria-labelledby="tab-batches"
+          hidden={activeTab !== "batches"}
+        >
+          {activeTab === "batches" && (
+            <BatchesTab itemId={itemId} unit={item.unit} />
+          )}
+        </div>
+      )}
 
       {/* Toast 通知 */}
       <ToastContainer messages={messages} onDismiss={dismiss} />

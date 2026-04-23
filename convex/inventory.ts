@@ -44,6 +44,32 @@ export const adjustQuantity = mutation({
       updatedBy: userId,
     });
 
+    // 1.5 消耗联动 FEFO：当减少库存且物品追踪保质期时，自动扣减最近过期的批次
+    if (args.change < 0 && item.trackExpiry) {
+      const consumeQty = Math.abs(args.change);
+      const allBatches = await ctx.db
+        .query("batches")
+        .withIndex("by_item", (q) => q.eq("itemId", args.itemId))
+        .take(500);
+
+      // 过滤 active 批次并按 expiryDate 升序（FEFO：最近过期的先消耗）
+      const sortedActive = allBatches
+        .filter((b) => b.status === "active")
+        .sort((a, b) => a.expiryDate - b.expiryDate);
+
+      let remaining = consumeQty;
+      for (const batch of sortedActive) {
+        if (remaining <= 0) break;
+        if (batch.quantity <= remaining) {
+          remaining -= batch.quantity;
+          await ctx.db.patch(batch._id, { quantity: 0, status: "consumed" as const });
+        } else {
+          await ctx.db.patch(batch._id, { quantity: batch.quantity - remaining });
+          remaining = 0;
+        }
+      }
+    }
+
     // 2. 写入 inventoryLogs
     await ctx.db.insert("inventoryLogs", {
       itemId: args.itemId,
