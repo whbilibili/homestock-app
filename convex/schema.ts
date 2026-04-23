@@ -35,7 +35,7 @@ export default defineSchema({
   // ── 预警 ──────────────────────────────────────────────
   alerts: defineTable({
     itemId: v.id("items"),
-    type: v.union(v.literal("low_stock"), v.literal("expiry_soon"), v.literal("expired")),
+    type: v.union(v.literal("low_stock"), v.literal("out_of_stock"), v.literal("expiry_soon"), v.literal("expired")),
     isRead: v.boolean(),
     isDismissed: v.boolean(),
     userId: v.id("users"),
