@@ -14,6 +14,7 @@ import type * as http from "../http.js";
 import type * as inventory from "../inventory.js";
 import type * as items from "../items.js";
 import type * as seed_commonItems from "../seed/commonItems.js";
+import type * as shoppingList from "../shoppingList.js";
 
 import type {
   ApiFromModules,
@@ -28,6 +29,7 @@ declare const fullApi: ApiFromModules<{
   inventory: typeof inventory;
   items: typeof items;
   "seed/commonItems": typeof seed_commonItems;
+  shoppingList: typeof shoppingList;
 }>;
 
 /**
