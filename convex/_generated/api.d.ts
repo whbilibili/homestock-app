@@ -10,7 +10,9 @@
 
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
-import type * as myFunctions from "../myFunctions.js";
+import type * as inventory from "../inventory.js";
+import type * as items from "../items.js";
+import type * as seed_commonItems from "../seed/commonItems.js";
 
 import type {
   ApiFromModules,
@@ -21,7 +23,9 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
-  myFunctions: typeof myFunctions;
+  inventory: typeof inventory;
+  items: typeof items;
+  "seed/commonItems": typeof seed_commonItems;
 }>;
 
 /**
