@@ -19,6 +19,7 @@
   --hs-warn: #D97706;
   --hs-warn-bg: #FEF3C7;
   --hs-error: #EF4444;
+  --hs-error-dark: #DC2626;
   --hs-error-bg: #FEE2E2;
 
   /* --- Neutral --- */
@@ -26,6 +27,7 @@
   --hs-text-muted: #6B7280;
   --hs-bg-canvas: #F9FAFB;
   --hs-bg-surface: #FFFFFF;
+  --hs-text-inverse: #FFFFFF;
   --hs-border: #E5E7EB;
 
   /* --- Radius Hierarchy --- */
@@ -71,6 +73,8 @@
   --color-hs-ok: var(--hs-ok);
   --color-hs-warn: var(--hs-warn);
   --color-hs-error: var(--hs-error);
+  --color-hs-error-dark: var(--hs-error-dark);
+  --color-hs-text-inverse: var(--hs-text-inverse);
 }
 
 body {
