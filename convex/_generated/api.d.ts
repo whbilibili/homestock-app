@@ -15,6 +15,7 @@ import type * as crons from "../crons.js";
 import type * as http from "../http.js";
 import type * as inventory from "../inventory.js";
 import type * as items from "../items.js";
+import type * as seed from "../seed.js";
 import type * as seed_commonItems from "../seed/commonItems.js";
 import type * as shoppingList from "../shoppingList.js";
 
@@ -32,6 +33,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   inventory: typeof inventory;
   items: typeof items;
+  seed: typeof seed;
   "seed/commonItems": typeof seed_commonItems;
   shoppingList: typeof shoppingList;
 }>;
