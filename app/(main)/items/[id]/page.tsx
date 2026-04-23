@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Button from "@/components/ui/Button";
+import HistoryTab from "@/components/inventory/HistoryTab";
 import { useItemById, useUpdateItem, useArchiveItem } from "@/hooks/useItems";
+import { useToast, ToastContainer } from "@/components/ui/Toast";
 import { categoryLabels } from "@/convex/seed/commonItems";
 import type { Category } from "@/convex/seed/commonItems";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -13,6 +15,7 @@ import type { UpdateItemFields } from "@/hooks/useItems";
  * 物品详情/编辑页 — /items/[id]
  *
  * ITEM-002: 查看物品详情 + 编辑所有字段 + 归档
+ * INV-003:  新增 Tab 切换（信息 | 历史），历史 Tab 展示变更记录 + 撤销按钮
  */
 
 const categoryOptions: { value: Category; label: string }[] = [
@@ -31,14 +34,28 @@ const categoryEmoji: Record<Category, string> = {
   other: "📦",
 };
 
+/** Tab 定义 */
+type TabKey = "info" | "history";
+
+const tabs: { key: TabKey; label: string; emoji: string }[] = [
+  { key: "info", label: "信息", emoji: "📝" },
+  { key: "history", label: "历史", emoji: "📋" },
+];
+
 export default function ItemDetailPage(): React.ReactElement {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const itemId = params.id as Id<"items">;
+  const { messages, toast, dismiss } = useToast();
 
   const item = useItemById(itemId);
   const updateItem = useUpdateItem();
   const archiveItem = useArchiveItem();
+
+  // ── Tab 状态 ──
+  const initialTab = (searchParams.get("tab") === "history" ? "history" : "info") as TabKey;
+  const [activeTab, setActiveTab] = useState<TabKey>(initialTab);
 
   // ── 编辑状态 ──
   const [isEditing, setIsEditing] = useState(false);
@@ -93,6 +110,15 @@ export default function ItemDetailPage(): React.ReactElement {
       setArchiving(false);
     }
   }, [itemId, archiveItem, router]);
+
+  const handleTabChange = useCallback((tab: TabKey) => {
+    setActiveTab(tab);
+    // 切换 Tab 时退出编辑模式
+    if (tab !== "info" && isEditing) {
+      setIsEditing(false);
+      setError("");
+    }
+  }, [isEditing]);
 
   const inputClass = [
     "w-full",
@@ -172,7 +198,7 @@ export default function ItemDetailPage(): React.ReactElement {
           ← 返回物品列表
         </button>
         <div className="flex gap-2">
-          {isEditing ? (
+          {activeTab === "info" && isEditing ? (
             <>
               <Button
                 variant="secondary"
@@ -196,7 +222,7 @@ export default function ItemDetailPage(): React.ReactElement {
                 {saving ? "保存中..." : "✅ 保存"}
               </Button>
             </>
-          ) : (
+          ) : activeTab === "info" ? (
             <>
               <Button variant="secondary" size="sm" onClick={startEditing}>
                 ✏️ 编辑
@@ -205,130 +231,191 @@ export default function ItemDetailPage(): React.ReactElement {
                 {archiving ? "归档中..." : "🗑️ 归档"}
               </Button>
             </>
-          )}
+          ) : null}
         </div>
       </div>
 
-      {/* 物品信息卡片 */}
-      <div className="bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-component)] p-6">
-        {/* 标题区 */}
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-3xl" aria-hidden="true">{emoji}</span>
-          <div className="flex-1">
-            {isEditing ? (
-              <input
-                type="text"
-                value={editForm.name ?? ""}
-                onChange={(e) => setEditForm((prev) => ({ ...prev, name: e.target.value }))}
-                className={`${inputClass} text-xl font-bold`}
-              />
-            ) : (
-              <h1 className="text-xl font-bold text-[var(--hs-text)]">{item.name}</h1>
-            )}
-            <p className="text-xs text-[var(--hs-text-muted)] mt-0.5">{catLabel}</p>
-          </div>
-          <span
+      {/* 物品标题区 */}
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-3xl" aria-hidden="true">{emoji}</span>
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl font-bold text-[var(--hs-text)] truncate">{item.name}</h1>
+          <p className="text-xs text-[var(--hs-text-muted)] mt-0.5">{catLabel}</p>
+        </div>
+        <span
+          className={[
+            "text-[10px] font-extrabold tracking-widest uppercase",
+            "px-2.5 py-1",
+            "rounded-[var(--hs-radius-pill)]",
+            stockStatus.colorClass,
+            stockStatus.bgClass,
+          ].join(" ")}
+        >
+          {stockStatus.label}
+        </span>
+      </div>
+
+      {/* 库存数量摘要（只读） */}
+      <div className="mb-6 p-4 bg-[var(--hs-bg-canvas)] rounded-[var(--hs-radius-control)]">
+        <p className="text-xs font-semibold text-[var(--hs-text-muted)] mb-1">当前库存</p>
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-bold text-[var(--hs-text)]">{item.quantity}</span>
+          <span className="text-sm text-[var(--hs-text-muted)]">{item.unit}</span>
+        </div>
+      </div>
+
+      {/* Tab 导航 */}
+      <div className="flex gap-1 mb-6" role="tablist" aria-label="物品详情标签页">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.key}
+            aria-controls={`tabpanel-${tab.key}`}
+            onClick={() => handleTabChange(tab.key)}
             className={[
-              "text-[10px] font-extrabold tracking-widest uppercase",
-              "px-2.5 py-1",
-              "rounded-[var(--hs-radius-pill)]",
-              stockStatus.colorClass,
-              stockStatus.bgClass,
+              "flex items-center gap-1.5 px-4 py-2",
+              "text-sm font-semibold",
+              "rounded-[var(--hs-radius-control)]",
+              "transition-all duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
+              "cursor-pointer",
+              activeTab === tab.key
+                ? "bg-[var(--hs-accent)] text-[var(--hs-text-inverse)]"
+                : "text-[var(--hs-text-muted)] hover:bg-[var(--hs-bg-surface)] hover:text-[var(--hs-text)]",
             ].join(" ")}
           >
-            {stockStatus.label}
-          </span>
-        </div>
-
-        {/* 库存数量（只读，数量调整在 INV-002 实现） */}
-        <div className="mb-6 p-4 bg-[var(--hs-bg-canvas)] rounded-[var(--hs-radius-control)]">
-          <p className="text-xs font-semibold text-[var(--hs-text-muted)] mb-1">当前库存</p>
-          <div className="flex items-baseline gap-1">
-            <span className="text-3xl font-bold text-[var(--hs-text)]">{item.quantity}</span>
-            <span className="text-sm text-[var(--hs-text-muted)]">{item.unit}</span>
-          </div>
-        </div>
-
-        {/* 编辑表单 */}
-        <div className="space-y-4">
-          {/* 分类 */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-category" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
-              分类
-            </label>
-            <select
-              id="edit-category"
-              value={isEditing ? (editForm.category ?? item.category) : item.category}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, category: e.target.value as Category }))}
-              disabled={!isEditing}
-              className={selectClass}
-            >
-              {categoryOptions.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* 单位 */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-unit" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
-              单位
-            </label>
-            <input
-              id="edit-unit"
-              type="text"
-              value={isEditing ? (editForm.unit ?? item.unit) : item.unit}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, unit: e.target.value }))}
-              disabled={!isEditing}
-              className={inputClass}
-            />
-          </div>
-
-          {/* 低库存警戒线 */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-threshold" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
-              低库存警戒线
-            </label>
-            <input
-              id="edit-threshold"
-              type="number"
-              min={0}
-              value={isEditing ? (editForm.alertThreshold ?? item.alertThreshold) : item.alertThreshold}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, alertThreshold: Number(e.target.value) }))}
-              disabled={!isEditing}
-              className={inputClass}
-            />
-          </div>
-
-          {/* 追踪保质期 */}
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={isEditing ? (editForm.trackExpiry ?? item.trackExpiry) : item.trackExpiry}
-              onChange={(e) => setEditForm((prev) => ({ ...prev, trackExpiry: e.target.checked }))}
-              disabled={!isEditing}
-              className="w-4 h-4 rounded-[var(--hs-radius-element)] border-[var(--hs-border)] text-[var(--hs-accent)] focus:ring-[var(--hs-accent)] cursor-pointer accent-[var(--hs-accent)]"
-            />
-            <span className="text-sm text-[var(--hs-text)]">追踪保质期</span>
-          </label>
-        </div>
-
-        {/* 错误提示 */}
-        {error && (
-          <p className="mt-4 text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-element)]">
-            ⚠️ {error}
-          </p>
-        )}
-
-        {/* 元信息 */}
-        <div className="mt-6 pt-4 border-t border-[var(--hs-border)]">
-          <p className="text-xs text-[var(--hs-text-muted)]">
-            创建时间：{new Date(item._creationTime).toLocaleString("zh-CN")}
-          </p>
-        </div>
+            <span aria-hidden="true">{tab.emoji}</span>
+            {tab.label}
+          </button>
+        ))}
       </div>
+
+      {/* Tab 内容区 */}
+      <div
+        id="tabpanel-info"
+        role="tabpanel"
+        aria-labelledby="tab-info"
+        hidden={activeTab !== "info"}
+      >
+        {activeTab === "info" && (
+          <div className="bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-component)] p-6">
+            {/* 编辑表单 */}
+            <div className="space-y-4">
+              {/* 名称（编辑模式） */}
+              {isEditing && (
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="edit-name" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                    物品名称
+                  </label>
+                  <input
+                    id="edit-name"
+                    type="text"
+                    value={editForm.name ?? ""}
+                    onChange={(e) => setEditForm((prev) => ({ ...prev, name: e.target.value }))}
+                    className={inputClass}
+                  />
+                </div>
+              )}
+
+              {/* 分类 */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="edit-category" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                  分类
+                </label>
+                <select
+                  id="edit-category"
+                  value={isEditing ? (editForm.category ?? item.category) : item.category}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, category: e.target.value as Category }))}
+                  disabled={!isEditing}
+                  className={selectClass}
+                >
+                  {categoryOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* 单位 */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="edit-unit" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                  单位
+                </label>
+                <input
+                  id="edit-unit"
+                  type="text"
+                  value={isEditing ? (editForm.unit ?? item.unit) : item.unit}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, unit: e.target.value }))}
+                  disabled={!isEditing}
+                  className={inputClass}
+                />
+              </div>
+
+              {/* 低库存警戒线 */}
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="edit-threshold" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                  低库存警戒线
+                </label>
+                <input
+                  id="edit-threshold"
+                  type="number"
+                  min={0}
+                  value={isEditing ? (editForm.alertThreshold ?? item.alertThreshold) : item.alertThreshold}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, alertThreshold: Number(e.target.value) }))}
+                  disabled={!isEditing}
+                  className={inputClass}
+                />
+              </div>
+
+              {/* 追踪保质期 */}
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isEditing ? (editForm.trackExpiry ?? item.trackExpiry) : item.trackExpiry}
+                  onChange={(e) => setEditForm((prev) => ({ ...prev, trackExpiry: e.target.checked }))}
+                  disabled={!isEditing}
+                  className="w-4 h-4 rounded-[var(--hs-radius-element)] border-[var(--hs-border)] text-[var(--hs-accent)] focus:ring-[var(--hs-accent)] cursor-pointer accent-[var(--hs-accent)]"
+                />
+                <span className="text-sm text-[var(--hs-text)]">追踪保质期</span>
+              </label>
+            </div>
+
+            {/* 错误提示 */}
+            {error && (
+              <p className="mt-4 text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-element)]">
+                ⚠️ {error}
+              </p>
+            )}
+
+            {/* 元信息 */}
+            <div className="mt-6 pt-4 border-t border-[var(--hs-border)]">
+              <p className="text-xs text-[var(--hs-text-muted)]">
+                创建时间：{new Date(item._creationTime).toLocaleString("zh-CN")}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div
+        id="tabpanel-history"
+        role="tabpanel"
+        aria-labelledby="tab-history"
+        hidden={activeTab !== "history"}
+      >
+        {activeTab === "history" && (
+          <HistoryTab
+            itemId={itemId}
+            unit={item.unit}
+            onToast={(message, type) => toast(message, type)}
+          />
+        )}
+      </div>
+
+      {/* Toast 通知 */}
+      <ToastContainer messages={messages} onDismiss={dismiss} />
     </div>
   );
 }
