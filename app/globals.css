@@ -1,26 +1,82 @@
 @import "tailwindcss";
 
+/* ============================================================
+   HomeStock Design System — Token Foundation
+   Source of truth: homestock-design SKILL.md
+   No dark mode. Light-only brand.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Accent (Emerald) --- */
+  --hs-accent: #10B981;
+  --hs-accent-dark: #059669;
+  --hs-accent-glow: rgba(16, 185, 129, 0.35);
+  --hs-accent-subtle: #D1FAE5;
+
+  /* --- Semantic Status --- */
+  --hs-ok: #059669;
+  --hs-ok-bg: #D1FAE5;
+  --hs-warn: #D97706;
+  --hs-warn-bg: #FEF3C7;
+  --hs-error: #EF4444;
+  --hs-error-bg: #FEE2E2;
+
+  /* --- Neutral --- */
+  --hs-text: #111827;
+  --hs-text-muted: #6B7280;
+  --hs-bg-canvas: #F9FAFB;
+  --hs-bg-surface: #FFFFFF;
+  --hs-border: #E5E7EB;
+
+  /* --- Radius Hierarchy --- */
+  --hs-radius-element: 6px;
+  --hs-radius-control: 10px;
+  --hs-radius-component: 16px;
+  --hs-radius-container: 20px;
+  --hs-radius-pill: 999px;
+
+  /* --- Elevation --- */
+  --hs-shadow-nav: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --hs-shadow-dropdown: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --hs-shadow-modal: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* --- Motion --- */
+  --hs-ease: ease-out;
+  --hs-duration-micro: 150ms;
+  --hs-duration-standard: 250ms;
+  --hs-duration-emphasis: 300ms;
+
+  /* --- Z-Index --- */
+  --hs-z-dropdown: 50;
+  --hs-z-nav: 100;
+  --hs-z-modal: 200;
+
+  /* --- Legacy compat (Tailwind @theme references) --- */
+  --background: #F9FAFB;
+  --foreground: #111827;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: "Outfit", var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-hs-accent: var(--hs-accent);
+  --color-hs-accent-dark: var(--hs-accent-dark);
+  --color-hs-text: var(--hs-text);
+  --color-hs-text-muted: var(--hs-text-muted);
+  --color-hs-bg-canvas: var(--hs-bg-canvas);
+  --color-hs-bg-surface: var(--hs-bg-surface);
+  --color-hs-border: var(--hs-border);
+  --color-hs-ok: var(--hs-ok);
+  --color-hs-warn: var(--hs-warn);
+  --color-hs-error: var(--hs-error);
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--hs-text);
+  background: var(--hs-bg-canvas);
+  font-family: "Outfit", var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
