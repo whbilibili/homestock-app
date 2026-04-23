@@ -2,6 +2,7 @@
   "name": "homestock-app",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.30.3",
   "scripts": {
     "dev": "convex dev --start 'next dev'",
     "predev": "convex init && node setup.mjs --once",
@@ -28,5 +29,12 @@
     "prettier": "^3.8.2",
     "tailwindcss": "^4.2.2",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp",
+      "unrs-resolver"
+    ]
   }
 }
