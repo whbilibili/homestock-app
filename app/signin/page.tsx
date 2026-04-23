@@ -3,116 +3,183 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Image from "next/image";
+import { ToastContainer, useToast } from "@/components/ui/Toast";
 
-export default function SignIn() {
+/* ------------------------------------------------------------------ */
+/*  SignIn Page                                                        */
+/* ------------------------------------------------------------------ */
+
+export default function SignInPage() {
   const { signIn } = useAuthActions();
-  const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const [flow, setFlow] = useState<"signIn" | "signUp">("signIn");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { messages, toast, dismiss } = useToast();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    /* ---- client-side validation ---- */
+    if (!email.trim()) {
+      toast("请输入邮箱地址", "error");
+      return;
+    }
+    if (password.length < 8) {
+      toast("密码至少需要 8 个字符", "error");
+      return;
+    }
+
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.set("email", email);
+    formData.set("password", password);
+    formData.set("flow", flow);
+
+    void signIn("password", formData)
+      .then(() => {
+        toast(flow === "signIn" ? "登录成功" : "注册成功", "success");
+        router.push("/inventory");
+      })
+      .catch((err: Error) => {
+        const msg =
+          flow === "signIn"
+            ? "登录失败，请检查邮箱和密码"
+            : "注册失败，该邮箱可能已被注册";
+        toast(err.message || msg, "error");
+        setLoading(false);
+      });
+  };
+
+  const isSignIn = flow === "signIn";
+
   return (
-    <div className="flex flex-col gap-8 w-full max-w-lg mx-auto h-screen justify-center items-center px-4">
-      <div className="text-center flex flex-col items-center gap-4">
-        <div className="flex items-center gap-6">
-          <Image
-            src="/convex.svg"
-            alt="Convex Logo"
-            width={90}
-            height={90}
-          />
-          <div className="w-px h-20 bg-slate-300 dark:bg-slate-600"></div>
-          <Image
-            src="/nextjs-icon-light-background.svg"
-            alt="Next.js Logo"
-            width={90}
-            height={90}
-            className="dark:hidden"
-          />
-          <Image
-            src="/nextjs-icon-dark-background.svg"
-            alt="Next.js Logo"
-            width={90}
-            height={90}
-            className="hidden dark:block"
-          />
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        {/* ---- Brand ---- */}
+        <div className="mb-8 text-center">
+          <h1
+            className="text-3xl font-bold tracking-tight"
+            style={{ fontFamily: "'Noto Serif JP', serif" }}
+          >
+            🏠 HomeStock
+          </h1>
+          <p className="mt-2 text-sm text-[var(--hs-text-muted)]">
+            家庭库存，轻松掌握
+          </p>
         </div>
-        <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-200">
-          Convex + Next.js + Convex Auth
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400">
-          This demo uses Convex Auth for authentication, so you will need to
-          sign in or sign up to access the demo.
+
+        {/* ---- Card ---- */}
+        <div className="rounded-[var(--hs-radius-component)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] p-6">
+          {/* ---- Tabs ---- */}
+          <div className="mb-6 flex rounded-[var(--hs-radius-control)] border border-[var(--hs-border)] overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setFlow("signIn")}
+              className={`flex-1 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
+                isSignIn
+                  ? "bg-[var(--hs-accent)] text-white"
+                  : "bg-transparent text-[var(--hs-text-muted)] hover:text-[var(--hs-text)]"
+              }`}
+            >
+              登录
+            </button>
+            <button
+              type="button"
+              onClick={() => setFlow("signUp")}
+              className={`flex-1 py-2.5 text-sm font-medium transition-colors cursor-pointer ${
+                !isSignIn
+                  ? "bg-[var(--hs-accent)] text-white"
+                  : "bg-transparent text-[var(--hs-text-muted)] hover:text-[var(--hs-text)]"
+              }`}
+            >
+              注册
+            </button>
+          </div>
+
+          {/* ---- Form ---- */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* Email */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="auth-email"
+                className="text-sm font-medium text-[var(--hs-text)]"
+              >
+                邮箱
+              </label>
+              <input
+                id="auth-email"
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                autoComplete="email"
+                className="rounded-[var(--hs-radius-element)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] px-3 py-2.5 text-sm text-[var(--hs-text)] placeholder:text-[var(--hs-text-muted)] outline-none transition-colors focus:border-[var(--hs-accent)] focus:ring-2 focus:ring-[var(--hs-accent-glow)]"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="auth-password"
+                className="text-sm font-medium text-[var(--hs-text)]"
+              >
+                密码
+              </label>
+              <input
+                id="auth-password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="至少 8 个字符"
+                required
+                minLength={8}
+                autoComplete={isSignIn ? "current-password" : "new-password"}
+                className="rounded-[var(--hs-radius-element)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] px-3 py-2.5 text-sm text-[var(--hs-text)] placeholder:text-[var(--hs-text-muted)] outline-none transition-colors focus:border-[var(--hs-accent)] focus:ring-2 focus:ring-[var(--hs-accent-glow)]"
+              />
+              {!isSignIn && (
+                <p className="px-1 text-xs text-[var(--hs-text-muted)]">
+                  密码至少需要 8 个字符
+                </p>
+              )}
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="mt-2 rounded-[var(--hs-radius-control)] bg-[var(--hs-accent)] py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--hs-accent-dark)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {loading
+                ? "处理中…"
+                : isSignIn
+                  ? "登录"
+                  : "创建账号"}
+            </button>
+          </form>
+        </div>
+
+        {/* ---- Footer hint ---- */}
+        <p className="mt-4 text-center text-xs text-[var(--hs-text-muted)]">
+          {isSignIn ? "还没有账号？" : "已有账号？"}
+          <button
+            type="button"
+            onClick={() => setFlow(isSignIn ? "signUp" : "signIn")}
+            className="ml-1 font-medium text-[var(--hs-accent)] hover:text-[var(--hs-accent-dark)] underline underline-offset-2 cursor-pointer"
+          >
+            {isSignIn ? "立即注册" : "去登录"}
+          </button>
         </p>
       </div>
-      <form
-        className="flex flex-col gap-4 w-full bg-slate-100 dark:bg-slate-800 p-8 rounded-2xl shadow-xl border border-slate-300 dark:border-slate-600"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setLoading(true);
-          setError(null);
-          const formData = new FormData(e.target as HTMLFormElement);
-          formData.set("flow", flow);
-          void signIn("password", formData)
-            .catch((error) => {
-              setError(error.message);
-              setLoading(false);
-            })
-            .then(() => {
-              router.push("/");
-            });
-        }}
-      >
-        <input
-          className="bg-white dark:bg-slate-900 text-foreground rounded-lg p-3 border border-slate-300 dark:border-slate-600 focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 outline-none transition-all placeholder:text-slate-400"
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-        />
-        <div className="flex flex-col gap-1">
-          <input
-            className="bg-white dark:bg-slate-900 text-foreground rounded-lg p-3 border border-slate-300 dark:border-slate-600 focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 outline-none transition-all placeholder:text-slate-400"
-            type="password"
-            name="password"
-            placeholder="Password"
-            minLength={8}
-            required
-          />
-          {flow === "signUp" && (
-            <p className="text-xs text-slate-500 dark:text-slate-400 px-1">
-              Password must be at least 8 characters
-            </p>
-          )}
-        </div>
-        <button
-          className="bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-500 text-white font-semibold rounded-lg py-3 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Loading..." : flow === "signIn" ? "Sign in" : "Sign up"}
-        </button>
-        <div className="flex flex-row gap-2 text-sm justify-center">
-          <span className="text-slate-600 dark:text-slate-400">
-            {flow === "signIn"
-              ? "Don't have an account?"
-              : "Already have an account?"}
-          </span>
-          <span
-            className="text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 font-medium underline decoration-2 underline-offset-2 hover:no-underline cursor-pointer transition-colors"
-            onClick={() => setFlow(flow === "signIn" ? "signUp" : "signIn")}
-          >
-            {flow === "signIn" ? "Sign up" : "Sign in"}
-          </span>
-        </div>
-        {error && (
-          <div className="bg-rose-500/10 border border-rose-500/30 dark:border-rose-500/50 rounded-lg p-4">
-            <p className="text-rose-700 dark:text-rose-300 font-medium text-sm break-words">
-              Error: {error}
-            </p>
-          </div>
-        )}
-      </form>
+
+      {/* ---- Toast ---- */}
+      <ToastContainer messages={messages} onDismiss={dismiss} />
     </div>
   );
 }
