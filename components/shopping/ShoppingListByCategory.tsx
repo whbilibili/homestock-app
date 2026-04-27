@@ -54,11 +54,7 @@ export default function ShoppingListByCategory({
         </span>
         <h2
           className="text-xl font-bold mb-2"
-          style={{
-            fontFamily: "'Noto Serif JP', serif",
-            color: "var(--hs-text)",
-            letterSpacing: "-0.01em",
-          }}
+          style={{ color: "var(--hs-text)", letterSpacing: "-0.01em" }}
         >
           购物清单为空
         </h2>
@@ -86,7 +82,7 @@ export default function ShoppingListByCategory({
               <span className="text-lg" aria-hidden="true">
                 {group.meta.emoji}
               </span>
-              <h3 className="text-sm font-semibold text-[var(--hs-text)] tracking-wide">
+              <h3 className="text-sm font-medium text-[var(--hs-text)] tracking-wide">
                 {group.meta.label}
               </h3>
               <span className="text-xs text-[var(--hs-text-muted)]">

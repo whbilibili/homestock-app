@@ -63,15 +63,8 @@ export default function NotificationsPage(): ReactElement {
 
       {/* 内容区 */}
       {alerts === undefined ? (
-        /* 加载态：skeleton */
-        <div className="flex flex-col gap-3">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-28 rounded-[var(--hs-radius-component)] bg-[var(--hs-border)] animate-pulse"
-            />
-          ))}
-        </div>
+        /* 加载态：spinner */
+        <div className="flex items-center justify-center py-16"><div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} /></div>
       ) : (
         <AlertList
           alerts={alerts}

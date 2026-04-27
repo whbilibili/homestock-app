@@ -6,10 +6,9 @@ import type { InputHTMLAttributes, ReactElement } from "react";
 /**
  * Input — HomeStock 基础输入框组件
  *
- * 遵循设计系统：
- * - radius: --hs-radius-element (6px)
- * - focus ring: emerald accent
- * - 无暗色模式
+ * 设计系统对齐：
+ * - radius: --hs-radius-control (8px)
+ * - focus ring: accent-subtle
  */
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -28,7 +27,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {label && (
         <label
           htmlFor={inputId}
-          className="text-xs font-semibold tracking-wide text-[var(--hs-text)]"
+          className="text-xs font-medium text-[var(--hs-text-secondary)]"
         >
           {label}
         </label>
@@ -41,15 +40,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           "bg-[var(--hs-bg-surface)]",
           "border",
           error ? "border-[var(--hs-error)]" : "border-[var(--hs-border)]",
-          "rounded-[var(--hs-radius-element)]",
+          "rounded-[var(--hs-radius-control)]",
           "px-3.5 py-2.5",
           "text-sm text-[var(--hs-text)]",
-          "placeholder:text-[var(--hs-text-muted)]",
-          "transition-[border-color,box-shadow] duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
-          "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_rgba(16,185,129,0.15)]",
+          "placeholder:text-[var(--hs-text-disabled)]",
+          "focus:outline-none focus:border-[var(--hs-accent)]",
           "disabled:opacity-50 disabled:cursor-not-allowed",
           className,
         ].join(" ")}
+        style={{
+          transitionProperty: "border-color, box-shadow",
+          transitionDuration: "var(--hs-duration-micro)",
+          transitionTimingFunction: "var(--hs-ease)",
+        }}
         {...rest}
       />
       {error && (

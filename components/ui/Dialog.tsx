@@ -6,13 +6,12 @@ import type { ReactElement, ReactNode } from "react";
 /**
  * Dialog — HomeStock 模态弹窗组件
  *
- * 遵循设计系统：
- * - radius: --hs-radius-component (16px)
- * - shadow: --hs-shadow-modal
+ * 设计系统对齐：
+ * - radius: --hs-radius-component (12px)
+ * - shadow: --hs-shadow-3
  * - z-index: --hs-z-modal (200)
- * - 动画: slideUp 300ms
+ * - 动画: slideUp 350ms
  * - ESC 关闭 + 遮罩关闭
- * - 焦点陷阱（基础实现）
  */
 
 interface DialogProps {
@@ -89,11 +88,13 @@ export default function Dialog({
           "bg-[var(--hs-bg-surface)]",
           "border border-[var(--hs-border)]",
           "rounded-[var(--hs-radius-component)]",
-          "shadow-[var(--hs-shadow-modal)]",
-          "animate-[slideUp_var(--hs-duration-emphasis)_var(--hs-ease)]",
           "max-h-[85vh] overflow-y-auto",
           "focus:outline-none",
         ].join(" ")}
+        style={{
+          boxShadow: "var(--hs-shadow-3)",
+          animation: "slideUp var(--hs-duration-emphasis) var(--hs-ease)",
+        }}
       >
         {/* 标题栏 */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--hs-border)]">
@@ -103,7 +104,11 @@ export default function Dialog({
           <button
             type="button"
             onClick={onClose}
-            className="text-[var(--hs-text-muted)] hover:text-[var(--hs-text)] transition-colors duration-[var(--hs-duration-micro)] cursor-pointer p-1"
+            className="text-[var(--hs-text-muted)] hover:text-[var(--hs-text)] cursor-pointer p-1"
+            style={{
+              transitionProperty: "color",
+              transitionDuration: "var(--hs-duration-micro)",
+            }}
             aria-label="关闭弹窗"
           >
             ✕

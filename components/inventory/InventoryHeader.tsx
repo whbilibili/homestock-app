@@ -63,7 +63,7 @@ export default function InventoryHeader({
     <div className="pb-4 mb-4 border-b border-[var(--hs-border)]">
       {/* 标题行 */}
       <div className="flex items-baseline gap-3 mb-4">
-        <h1 className="text-2xl font-bold text-[var(--hs-text)] font-[family-name:var(--font-noto-serif-jp)]">
+        <h1 className="text-2xl font-bold text-[var(--hs-text)]">
           库存总览
         </h1>
         <span className="text-sm text-[var(--hs-text-muted)]">

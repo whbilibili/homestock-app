@@ -63,7 +63,6 @@ export default function SignInPage() {
         <div className="mb-8 text-center">
           <h1
             className="text-3xl font-bold tracking-tight"
-            style={{ fontFamily: "'Noto Serif JP', serif" }}
           >
             🏠 HomeStock
           </h1>
@@ -119,7 +118,7 @@ export default function SignInPage() {
                 placeholder="you@example.com"
                 required
                 autoComplete="email"
-                className="rounded-[var(--hs-radius-element)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] px-3 py-2.5 text-sm text-[var(--hs-text)] placeholder:text-[var(--hs-text-muted)] outline-none transition-colors focus:border-[var(--hs-accent)] focus:ring-2 focus:ring-[var(--hs-accent-glow)]"
+                className="rounded-[var(--hs-radius-control)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] px-3 py-2.5 text-sm text-[var(--hs-text)] placeholder:text-[var(--hs-text-muted)] outline-none transition-colors focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]"
               />
             </div>
 
@@ -141,7 +140,7 @@ export default function SignInPage() {
                 required
                 minLength={8}
                 autoComplete={isSignIn ? "current-password" : "new-password"}
-                className="rounded-[var(--hs-radius-element)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] px-3 py-2.5 text-sm text-[var(--hs-text)] placeholder:text-[var(--hs-text-muted)] outline-none transition-colors focus:border-[var(--hs-accent)] focus:ring-2 focus:ring-[var(--hs-accent-glow)]"
+                className="rounded-[var(--hs-radius-control)] border border-[var(--hs-border)] bg-[var(--hs-bg-surface)] px-3 py-2.5 text-sm text-[var(--hs-text)] placeholder:text-[var(--hs-text-muted)] outline-none transition-colors focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]"
               />
               {!isSignIn && (
                 <p className="px-1 text-xs text-[var(--hs-text-muted)]">
@@ -154,7 +153,7 @@ export default function SignInPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-2 rounded-[var(--hs-radius-control)] bg-[var(--hs-accent)] py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[var(--hs-accent-dark)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="mt-2 rounded-[var(--hs-radius-control)] bg-[var(--hs-accent)] py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--hs-accent-dark)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading
                 ? "处理中…"

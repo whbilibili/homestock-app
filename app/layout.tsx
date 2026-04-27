@@ -1,43 +1,37 @@
 import type { Metadata } from "next";
-import { Outfit, Noto_Serif_JP } from "next/font/google";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
 
 /**
- * Outfit — 主 UI 字体（homestock-design §3.1）
- * 用于所有功能性 UI 文本：标签、按钮、正文、导航
+ * Noto Sans SC — 主 UI 字体（homestock-design tokens.md §Typography）
+ * 用于所有功能性 UI 文本：标签、按钮、正文、导航、标题
+ * 使用本地字体文件，避免依赖 fonts.gstatic.com（国内网络不稳定）
  */
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  weight: ["300", "400", "600", "700", "800"],
+const notoSansSC = localFont({
+  src: [
+    { path: "../public/fonts/NotoSansSC-Light.woff2", weight: "300", style: "normal" },
+    { path: "../public/fonts/NotoSansSC-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/NotoSansSC-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/NotoSansSC-Bold.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-noto-sans-sc",
   display: "swap",
 });
 
 /**
- * Noto Serif JP — 展示字体（homestock-design §3.1）
- * 仅用于 display moments：hero headings、onboarding titles、empty-state
+ * JetBrains Mono — 等宽字体（homestock-design tokens.md §Typography）
+ * 用于数字、计量、代码等需要等宽显示的内容
+ * 使用本地字体文件，避免依赖 fonts.gstatic.com（国内网络不稳定）
  */
-const notoSerifJP = Noto_Serif_JP({
-  variable: "--font-noto-serif-jp",
-  subsets: ["latin"],
-  weight: ["700"],
+const jetBrainsMono = localFont({
+  src: [
+    { path: "../public/fonts/JetBrainsMono-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/JetBrainsMono-Medium.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-jetbrains-mono",
   display: "swap",
-});
-
-/**
- * Geist Sans / Mono — 降级备用字体
- */
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -57,7 +51,7 @@ export default function RootLayout({
     <ConvexAuthNextjsServerProvider>
       <html lang="zh-CN">
         <body
-          className={`${outfit.variable} ${notoSerifJP.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${notoSansSC.variable} ${jetBrainsMono.variable} antialiased`}
         >
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </body>

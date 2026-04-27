@@ -25,28 +25,29 @@ const NAV_ITEMS: NavItem[] = [
  * Sidebar — 桌面端左侧固定导航栏
  *
  * 仅在 md (≥768px) 以上显示。
- * 设计规范：flat card（无 shadow）、emerald accent active 态
+ * 设计规范：flat card（无 shadow）、mint-green accent active 态
+ * 宽度 220px（design system spec）
  */
 export default function Sidebar(): React.ReactElement {
   const pathname = usePathname();
 
   return (
     <aside
-      className="hidden md:flex fixed top-0 left-0 bottom-0 w-64 flex-col border-r z-[100]"
+      className="hidden md:flex fixed top-0 left-0 bottom-0 flex-col border-r z-[100]"
       style={{
+        width: "220px",
         background: "var(--hs-bg-surface)",
         borderColor: "var(--hs-border)",
       }}
     >
       {/* Logo */}
       <div
-        className="flex items-center px-6"
-        style={{ height: "64px", borderBottom: "1px solid var(--hs-border)" }}
+        className="flex items-center px-5"
+        style={{ height: "56px", borderBottom: "1px solid var(--hs-border)" }}
       >
         <h1
-          className="text-xl font-bold tracking-tight"
+          className="text-lg font-bold tracking-tight"
           style={{
-            fontFamily: "'Noto Serif JP', serif",
             color: "var(--hs-text)",
             letterSpacing: "-0.01em",
           }}
@@ -69,8 +70,11 @@ export default function Sidebar(): React.ReactElement {
                 <Link
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-[var(--hs-radius-control)] text-sm font-semibold transition-all duration-[var(--hs-duration-micro)]"
+                  className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-all"
                   style={{
+                    borderRadius: "var(--hs-radius-control)",
+                    transitionDuration: "var(--hs-duration-micro)",
+                    transitionTimingFunction: "var(--hs-ease)",
                     color: isActive
                       ? "var(--hs-accent-dark)"
                       : "var(--hs-text-muted)",

@@ -41,26 +41,8 @@ export default function InventoryPage(): ReactElement {
   // 加载态
   if (items === undefined) {
     return (
-      <div className="py-6">
-        <div className="pb-4 mb-4 border-b border-[var(--hs-border)]">
-          <div className="h-8 w-32 bg-[var(--hs-border)] rounded-[var(--hs-radius-element)] animate-pulse" />
-          <div className="flex gap-3 mt-4">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-10 w-24 bg-[var(--hs-border)] rounded-[var(--hs-radius-control)] animate-pulse"
-              />
-            ))}
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div
-              key={i}
-              className="h-24 bg-[var(--hs-border)] rounded-[var(--hs-radius-component)] animate-pulse"
-            />
-          ))}
-        </div>
+      <div className="flex items-center justify-center py-16">
+        <div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }

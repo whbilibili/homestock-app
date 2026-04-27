@@ -168,15 +168,8 @@ export default function ShoppingPage(): ReactElement {
 
       {/* 内容区 */}
       {shoppingItems === undefined ? (
-        /* 加载态：skeleton */
-        <div className="flex flex-col gap-3">
-          {[1, 2, 3, 4].map((i) => (
-            <div
-              key={i}
-              className="h-20 rounded-[var(--hs-radius-component)] bg-[var(--hs-border)] animate-pulse"
-            />
-          ))}
-        </div>
+        /* 加载态：spinner */
+        <div className="flex items-center justify-center py-16"><div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} /></div>
       ) : (
         <>
           {/* 购物清单列表 */}

@@ -2,67 +2,92 @@
 
 /* ============================================================
    HomeStock Design System — Token Foundation
-   Source of truth: homestock-design SKILL.md
-   No dark mode. Light-only brand.
+   Source of truth: homestock-design SKILL
+   Light-only brand. All tokens aligned to design system spec.
    ============================================================ */
 
 :root {
-  /* --- Accent (Emerald) --- */
-  --hs-accent: #10B981;
-  --hs-accent-dark: #059669;
-  --hs-accent-glow: rgba(16, 185, 129, 0.35);
-  --hs-accent-subtle: #D1FAE5;
+  /* --- Brand (Mint-green) --- */
+  --hs-accent: #43A047;
+  --hs-accent-dark: #388E3C;
+  --hs-accent-hover: #2E7D32;
+  --hs-accent-glow: rgba(67, 160, 71, 0.35);
+  --hs-accent-subtle: #E8F5E9;
 
   /* --- Semantic Status --- */
-  --hs-ok: #059669;
-  --hs-ok-bg: #D1FAE5;
-  --hs-warn: #D97706;
-  --hs-warn-bg: #FEF3C7;
-  --hs-error: #EF4444;
-  --hs-error-dark: #DC2626;
-  --hs-error-bg: #FEE2E2;
+  --hs-ok: #43A047;
+  --hs-ok-bg: #E8F5E9;
+  --hs-warn: #FF9800;
+  --hs-warn-bg: #FFF8E1;
+  --hs-error: #E53935;
+  --hs-error-dark: #D32F2F;
+  --hs-error-bg: #FEF3F2;
 
-  /* --- Neutral --- */
-  --hs-text: #111827;
-  --hs-text-muted: #6B7280;
-  --hs-bg-canvas: #F9FAFB;
-  --hs-bg-surface: #FFFFFF;
+  /* --- Neutral (cool-tinted gray) --- */
+  --hs-text: #101828;
+  --hs-text-secondary: #475467;
+  --hs-text-muted: #667085;
+  --hs-text-disabled: #98A2B3;
   --hs-text-inverse: #FFFFFF;
-  --hs-border: #E5E7EB;
 
-  /* --- Radius Hierarchy --- */
-  --hs-radius-element: 6px;
-  --hs-radius-control: 10px;
-  --hs-radius-component: 16px;
-  --hs-radius-container: 20px;
+  --hs-bg-canvas: #F0F2F5;
+  --hs-bg-surface: #FFFFFF;
+  --hs-bg-inset: #F7F8FA;
+  --hs-border: #E4E7EC;
+  --hs-border-visible: #D0D5DD;
+
+  /* --- Category Colors (informational only) --- */
+  --hs-cat-food: #43A047;
+  --hs-cat-food-bg: #E8F5E9;
+  --hs-cat-daily: #4A90D9;
+  --hs-cat-daily-bg: #E3F2FD;
+  --hs-cat-cleaning: #FF9800;
+  --hs-cat-cleaning-bg: #FFF8E1;
+  --hs-cat-personal: #E91E63;
+  --hs-cat-personal-bg: #FCE4EC;
+  --hs-cat-health: #9C27B0;
+  --hs-cat-health-bg: #F3E5F5;
+  --hs-cat-other: #7C4DFF;
+  --hs-cat-other-bg: #EDE7F6;
+
+  /* --- Radius Hierarchy (design system spec) --- */
+  --hs-radius-element: 4px;
+  --hs-radius-control: 8px;
+  --hs-radius-component: 12px;
+  --hs-radius-container: 16px;
   --hs-radius-pill: 999px;
 
-  /* --- Elevation --- */
-  --hs-shadow-nav: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --hs-shadow-dropdown: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --hs-shadow-modal: 0 8px 30px rgba(0, 0, 0, 0.12);
+  /* --- Elevation (design system spec) --- */
+  --hs-shadow-1: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --hs-shadow-2: 0 4px 12px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.04);
+  --hs-shadow-3: 0 12px 32px rgba(16, 24, 40, 0.12), 0 4px 8px rgba(16, 24, 40, 0.06);
+
+  /* --- Legacy aliases (backward compat) --- */
+  --hs-shadow-nav: var(--hs-shadow-1);
+  --hs-shadow-dropdown: var(--hs-shadow-2);
+  --hs-shadow-modal: var(--hs-shadow-3);
 
   /* --- Motion --- */
-  --hs-ease: ease-out;
+  --hs-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --hs-duration-micro: 150ms;
   --hs-duration-standard: 250ms;
-  --hs-duration-emphasis: 300ms;
+  --hs-duration-emphasis: 350ms;
 
   /* --- Z-Index --- */
   --hs-z-dropdown: 50;
   --hs-z-nav: 100;
   --hs-z-modal: 200;
 
-  /* --- Legacy compat (Tailwind @theme references) --- */
-  --background: #F9FAFB;
-  --foreground: #111827;
+  /* --- Tailwind @theme compat --- */
+  --background: #F0F2F5;
+  --foreground: #101828;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Outfit", var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: "Noto Sans SC", "PingFang SC", -apple-system, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Menlo", ui-monospace, monospace;
   --color-hs-accent: var(--hs-accent);
   --color-hs-accent-dark: var(--hs-accent-dark);
   --color-hs-text: var(--hs-text);
@@ -80,7 +105,7 @@
 body {
   color: var(--hs-text);
   background: var(--hs-bg-canvas);
-  font-family: "Outfit", var(--font-geist-sans), system-ui, sans-serif;
+  font-family: "Noto Sans SC", "PingFang SC", -apple-system, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -94,5 +119,22 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

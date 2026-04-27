@@ -75,14 +75,23 @@ function ToastItem({
   return (
     <div
       role="alert"
-      className={`flex items-center gap-2 rounded-[var(--hs-radius-control)] border px-4 py-3 text-sm font-medium shadow-[var(--hs-shadow-dropdown)] animate-[slideUp_var(--hs-duration-standard)_var(--hs-ease)] ${variantStyles[message.variant]}`}
+      className={`flex items-center gap-2 border px-4 py-3 text-sm font-medium ${variantStyles[message.variant]}`}
+      style={{
+        borderRadius: "var(--hs-radius-control)",
+        boxShadow: "var(--hs-shadow-2)",
+        animation: "slideDown var(--hs-duration-standard) var(--hs-ease)",
+      }}
     >
       <span aria-hidden="true">{variantEmoji[message.variant]}</span>
       <span className="flex-1">{message.text}</span>
       <button
         type="button"
         onClick={() => onDismiss(message.id)}
-        className="ml-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+        className="ml-2 opacity-60 hover:opacity-100 cursor-pointer"
+        style={{
+          transitionProperty: "opacity",
+          transitionDuration: "var(--hs-duration-micro)",
+        }}
         aria-label="关闭提示"
       >
         ✕
@@ -92,7 +101,7 @@ function ToastItem({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Toast Container                                                    */
+/*  Toast Container — top center (design system spec)                  */
 /* ------------------------------------------------------------------ */
 
 export function ToastContainer({
@@ -105,7 +114,13 @@ export function ToastContainer({
   if (messages.length === 0) return null;
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[var(--hs-z-modal)] flex flex-col gap-2 w-[90vw] max-w-sm">
+    <div
+      className="fixed left-1/2 -translate-x-1/2 flex flex-col gap-2 w-[90vw] max-w-sm"
+      style={{
+        top: "24px",
+        zIndex: "var(--hs-z-modal)",
+      }}
+    >
       {messages.map((msg) => (
         <ToastItem key={msg.id} message={msg} onDismiss={onDismiss} />
       ))}

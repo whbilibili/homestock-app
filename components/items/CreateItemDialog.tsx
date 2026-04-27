@@ -113,23 +113,23 @@ export default function CreateItemDialog({
     "w-full",
     "bg-[var(--hs-bg-surface)]",
     "border border-[var(--hs-border)]",
-    "rounded-[var(--hs-radius-element)]",
+    "rounded-[var(--hs-radius-control)]",
     "px-3.5 py-2.5",
     "text-sm text-[var(--hs-text)]",
     "placeholder:text-[var(--hs-text-muted)]",
     "transition-[border-color,box-shadow] duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
-    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_rgba(16,185,129,0.15)]",
+    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]",
   ].join(" ");
 
   const selectClass = [
     "w-full",
     "bg-[var(--hs-bg-surface)]",
     "border border-[var(--hs-border)]",
-    "rounded-[var(--hs-radius-element)]",
+    "rounded-[var(--hs-radius-control)]",
     "px-3.5 py-2.5",
     "text-sm text-[var(--hs-text)]",
     "transition-[border-color,box-shadow] duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
-    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_rgba(16,185,129,0.15)]",
+    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]",
     "cursor-pointer",
   ].join(" ");
 
@@ -141,8 +141,8 @@ export default function CreateItemDialog({
           type="button"
           onClick={() => setTab("common")}
           className={[
-            "flex-1 py-2 text-sm font-semibold rounded-[var(--hs-radius-element)]",
-            "transition-all duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
+            "flex-1 py-2 text-sm font-medium rounded-[var(--hs-radius-control)]",
+            "transition-colors duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
             "cursor-pointer",
             tab === "common"
               ? "bg-[var(--hs-bg-surface)] text-[var(--hs-accent)] shadow-sm"
@@ -155,8 +155,8 @@ export default function CreateItemDialog({
           type="button"
           onClick={() => setTab("manual")}
           className={[
-            "flex-1 py-2 text-sm font-semibold rounded-[var(--hs-radius-element)]",
-            "transition-all duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
+            "flex-1 py-2 text-sm font-medium rounded-[var(--hs-radius-control)]",
+            "transition-colors duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
             "cursor-pointer",
             tab === "manual"
               ? "bg-[var(--hs-bg-surface)] text-[var(--hs-accent)] shadow-sm"
@@ -177,7 +177,7 @@ export default function CreateItemDialog({
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* 物品名称 */}
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="item-name" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+            <label htmlFor="item-name" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
               物品名称 *
             </label>
             <input
@@ -194,7 +194,7 @@ export default function CreateItemDialog({
           {/* 分类 + 单位 */}
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="item-category" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+              <label htmlFor="item-category" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                 分类
               </label>
               <select
@@ -211,7 +211,7 @@ export default function CreateItemDialog({
               </select>
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="item-unit" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+              <label htmlFor="item-unit" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                 单位
               </label>
               <input
@@ -228,7 +228,7 @@ export default function CreateItemDialog({
           {/* 初始数量 + 警戒线 */}
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="item-quantity" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+              <label htmlFor="item-quantity" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                 初始数量
               </label>
               <input
@@ -241,7 +241,7 @@ export default function CreateItemDialog({
               />
             </div>
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="item-threshold" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+              <label htmlFor="item-threshold" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                 低库存警戒线
               </label>
               <input
@@ -268,7 +268,7 @@ export default function CreateItemDialog({
 
           {/* 错误提示 */}
           {error && (
-            <p className="text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-element)]">
+            <p className="text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-control)]">
               ⚠️ {error}
             </p>
           )}

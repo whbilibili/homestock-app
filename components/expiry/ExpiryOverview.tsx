@@ -45,11 +45,7 @@ export default function ExpiryOverview({ batches }: ExpiryOverviewProps): ReactE
         </span>
         <h2
           className="text-xl font-bold mb-2"
-          style={{
-            fontFamily: "'Noto Serif JP', serif",
-            color: "var(--hs-text)",
-            letterSpacing: "-0.01em",
-          }}
+          style={{ color: "var(--hs-text)", letterSpacing: "-0.01em" }}
         >
           保质期一切正常
         </h2>

@@ -119,12 +119,12 @@ export default function PurchaseSheet({
     "w-full",
     "bg-[var(--hs-bg-surface)]",
     "border border-[var(--hs-border)]",
-    "rounded-[var(--hs-radius-element)]",
+    "rounded-[var(--hs-radius-control)]",
     "px-3 py-2",
     "text-sm text-[var(--hs-text)]",
     "placeholder:text-[var(--hs-text-muted)]",
     "transition-[border-color,box-shadow] duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
-    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_rgba(16,185,129,0.15)]",
+    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]",
   ].join(" ");
 
   return (
@@ -145,7 +145,7 @@ export default function PurchaseSheet({
         {rows.map((row, index) => (
           <div
             key={row.id}
-            className="flex flex-col gap-2 p-3 bg-[var(--hs-bg-surface)] rounded-[var(--hs-radius-element)] border border-[var(--hs-border)]"
+            className="flex flex-col gap-2 p-3 bg-[var(--hs-bg-surface)] rounded-[var(--hs-radius-control)] border border-[var(--hs-border)]"
           >
             <p className="text-sm font-medium text-[var(--hs-text)]">
               {row.itemName}
@@ -159,7 +159,7 @@ export default function PurchaseSheet({
               <div className="flex flex-col gap-1">
                 <label
                   htmlFor={`actual-${row.id}`}
-                  className="text-xs font-semibold tracking-wide text-[var(--hs-text)]"
+                  className="text-xs font-medium tracking-wide text-[var(--hs-text)]"
                 >
                   实际数量 *
                 </label>
@@ -177,7 +177,7 @@ export default function PurchaseSheet({
               <div className="flex flex-col gap-1">
                 <label
                   htmlFor={`price-${row.id}`}
-                  className="text-xs font-semibold tracking-wide text-[var(--hs-text)]"
+                  className="text-xs font-medium tracking-wide text-[var(--hs-text)]"
                 >
                   价格（元）
                 </label>
@@ -199,7 +199,7 @@ export default function PurchaseSheet({
               <div className="flex flex-col gap-1">
                 <label
                   htmlFor={`expiry-${row.id}`}
-                  className="text-xs font-semibold tracking-wide text-[var(--hs-text)]"
+                  className="text-xs font-medium tracking-wide text-[var(--hs-text)]"
                 >
                   过期日期 *
                 </label>
@@ -218,7 +218,7 @@ export default function PurchaseSheet({
 
         {/* 错误提示 */}
         {error && (
-          <p className="text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-element)]">
+          <p className="text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-control)]">
             ⚠️ {error}
           </p>
         )}
