@@ -35,15 +35,8 @@ export default function ExpiryPage(): ReactElement {
 
       {/* 内容区 */}
       {batches === undefined ? (
-        /* 加载态：skeleton */
-        <div className="space-y-3">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={`expiry-skeleton-${i}`}
-              className="h-24 bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-component)] animate-pulse"
-            />
-          ))}
-        </div>
+        /* 加载态：spinner */
+        <div className="flex items-center justify-center py-16"><div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} /></div>
       ) : (
         <ExpiryOverview batches={batches} />
       )}

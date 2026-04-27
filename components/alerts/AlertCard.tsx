@@ -67,8 +67,8 @@ export default function AlertCard({
         "bg-[var(--hs-bg-surface)]",
         "border border-[var(--hs-border)]",
         "rounded-[var(--hs-radius-component)]",
-        "transition-transform duration-[var(--hs-duration-standard)] ease-[var(--hs-ease)]",
-        "hover:-translate-y-0.5",
+        "transition-shadow duration-[var(--hs-duration-standard)] ease-[var(--hs-ease)]",
+        "hover:shadow-[var(--hs-shadow-1)]",
       ].join(" ")}
       aria-label={`${alert.itemName} ${meta.label}`}
     >
@@ -94,7 +94,7 @@ export default function AlertCard({
           <span
             className={[
               "flex-shrink-0",
-              "text-[10px] font-extrabold tracking-widest uppercase",
+              "text-[10px] font-bold tracking-wide",
               "px-2 py-0.5",
               "rounded-[var(--hs-radius-pill)]",
               meta.colorClass,

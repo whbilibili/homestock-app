@@ -8,10 +8,10 @@ import MobileTabBar from "./MobileTabBar";
  * AppShell — 全局布局容器
  *
  * 负责响应式切换逻辑：
- * - md (≥768px)：左侧 Sidebar(w-64) + 右侧内容区
+ * - md (≥768px)：左侧 Sidebar(220px) + 右侧内容区
  * - < md：顶部 Header + 全屏内容区 + 底部 MobileTabBar
  *
- * Header 在两种模式下都显示（桌面端偏移 left-64）。
+ * Header 在两种模式下都显示（桌面端偏移 left: 220px）。
  */
 export default function AppShell({
   children,
@@ -26,10 +26,9 @@ export default function AppShell({
       {/* 顶部导航栏 */}
       <Header />
 
-      {/* 主内容区 */}
+      {/* 主内容区 — 桌面端左偏移 220px 匹配 Sidebar 宽度 */}
       <main
-        className="md:ml-64 pt-16 pb-20 md:pb-6 px-4 md:px-6"
-        style={{ minHeight: "calc(100vh - 64px)" }}
+        className="pt-14 pb-20 md:pb-6 px-4 md:px-6 md:ml-[220px] min-h-[calc(100vh-56px)]"
       >
         {children}
       </main>

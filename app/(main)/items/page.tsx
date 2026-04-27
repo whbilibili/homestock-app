@@ -72,26 +72,8 @@ export default function ItemsPage(): React.ReactElement {
   // ── 加载态 ──
   if (items === undefined) {
     return (
-      <div className="py-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-xl font-bold text-[var(--hs-text)]">
-              🏷️ 物品管理
-            </h1>
-            <p className="text-xs text-[var(--hs-text-muted)] mt-0.5">
-              加载中...
-            </p>
-          </div>
-        </div>
-        {/* 骨架屏 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div
-              key={`skeleton-${i}`}
-              className="h-32 bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-component)] animate-pulse"
-            />
-          ))}
-        </div>
+      <div className="flex items-center justify-center py-16">
+        <div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }

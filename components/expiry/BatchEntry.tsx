@@ -57,7 +57,7 @@ export default function BatchEntry({ batch, unit }: BatchEntryProps): ReactEleme
           </span>
           <span
             className={[
-              "text-[10px] font-extrabold tracking-widest uppercase",
+              "text-[10px] font-bold tracking-wide",
               "px-2 py-0.5",
               "rounded-[var(--hs-radius-pill)]",
               statusColorClass,

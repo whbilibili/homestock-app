@@ -29,12 +29,7 @@ export default function BatchesTab({ itemId, unit }: BatchesTabProps): ReactElem
   if (batches === undefined) {
     return (
       <div className="space-y-3">
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div
-            key={`batch-skeleton-${i}`}
-            className="h-14 bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-element)] animate-pulse"
-          />
-        ))}
+        <div className="flex items-center justify-center py-12"><div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} /></div>
       </div>
     );
   }
@@ -62,7 +57,7 @@ export default function BatchesTab({ itemId, unit }: BatchesTabProps): ReactElem
     <div className="space-y-4">
       {/* 批次汇总 */}
       <div className="p-4 bg-[var(--hs-bg-canvas)] rounded-[var(--hs-radius-control)]">
-        <p className="text-xs font-semibold text-[var(--hs-text-muted)] mb-1">有效批次库存</p>
+        <p className="text-xs font-medium text-[var(--hs-text-muted)] mb-1">有效批次库存</p>
         <div className="flex items-baseline gap-1">
           <span className="text-2xl font-bold text-[var(--hs-text)]">{totalActiveQty}</span>
           <span className="text-sm text-[var(--hs-text-muted)]">{unit}</span>

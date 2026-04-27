@@ -42,13 +42,11 @@ export default function HistoryTab({
   // ── 加载态 ──
   if (history === undefined) {
     return (
-      <div className="space-y-3">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div
-            key={`history-skeleton-${i}`}
-            className="h-14 bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-element)] animate-pulse"
-          />
-        ))}
+      <div className="flex items-center justify-center py-12">
+        <div
+          className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full"
+          style={{ animation: "spin 0.8s linear infinite" }}
+        />
       </div>
     );
   }

@@ -33,11 +33,7 @@ export default function AlertList({
         </span>
         <h2
           className="text-xl font-bold mb-2"
-          style={{
-            fontFamily: "'Noto Serif JP', serif",
-            color: "var(--hs-text)",
-            letterSpacing: "-0.01em",
-          }}
+          style={{ color: "var(--hs-text)", letterSpacing: "-0.01em" }}
         >
           暂无提醒
         </h2>

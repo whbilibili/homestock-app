@@ -6,7 +6,7 @@ import type { ButtonHTMLAttributes, ReactElement } from "react";
  * Button — HomeStock 基础按钮组件
  *
  * 变体：
- * - primary: emerald 主色按钮（CTA）
+ * - primary: mint-green 主色按钮（CTA）
  * - secondary: 白底描边按钮
  * - ghost: 无边框透明按钮
  * - danger: 红色危险操作按钮
@@ -15,6 +15,11 @@ import type { ButtonHTMLAttributes, ReactElement } from "react";
  * - sm: 紧凑（padding 6px 12px）
  * - md: 默认（padding 10px 20px）
  * - lg: 大号（padding 12px 24px）
+ *
+ * 设计系统对齐：
+ * - 无 translate/glow hover（anti-pattern）
+ * - radius: --hs-radius-control (8px)
+ * - focus: 2px ring + offset
  */
 
 type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
@@ -29,9 +34,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary: [
     "text-[var(--hs-text-inverse)]",
     "bg-[var(--hs-accent)]",
-    "hover:bg-[var(--hs-accent-dark)]",
-    "hover:-translate-y-1",
-    "hover:shadow-[0_6px_20px_var(--hs-accent-glow)]",
+    "hover:bg-[var(--hs-accent-hover)]",
     "focus-visible:outline-none",
     "focus-visible:ring-2",
     "focus-visible:ring-[var(--hs-accent)]",
@@ -52,7 +55,7 @@ const variantClasses: Record<ButtonVariant, string> = {
   ghost: [
     "text-[var(--hs-text-muted)]",
     "bg-transparent",
-    "hover:bg-[var(--hs-bg-canvas)]",
+    "hover:bg-[var(--hs-bg-inset)]",
     "hover:text-[var(--hs-text)]",
     "focus-visible:outline-none",
     "focus-visible:ring-2",
@@ -88,15 +91,19 @@ export default function Button({
     <button
       className={[
         "inline-flex items-center justify-center gap-2",
-        "font-semibold",
+        "font-medium",
         "rounded-[var(--hs-radius-control)]",
-        "transition-all duration-[var(--hs-duration-standard)] ease-[var(--hs-ease)]",
+        "transition-colors",
         "cursor-pointer",
-        "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none disabled:hover:shadow-none",
+        "disabled:opacity-50 disabled:cursor-not-allowed",
         variantClasses[variant],
         sizeClasses[size],
         className,
       ].join(" ")}
+      style={{
+        transitionDuration: "var(--hs-duration-micro)",
+        transitionTimingFunction: "var(--hs-ease)",
+      }}
       disabled={disabled}
       {...rest}
     >

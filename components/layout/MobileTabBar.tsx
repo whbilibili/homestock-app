@@ -26,7 +26,7 @@ const TAB_ITEMS: TabItem[] = [
  * MobileTabBar — 移动端底部固定 Tab 导航
  *
  * 仅在 < md (< 768px) 显示。
- * 设计规范：flat（无 shadow）、emerald accent active 态、最小 44x44 触控区
+ * 设计规范：flat（无 shadow）、mint-green accent active 态、最小 44x44 触控区
  */
 export default function MobileTabBar(): React.ReactElement {
   const pathname = usePathname();
@@ -35,7 +35,7 @@ export default function MobileTabBar(): React.ReactElement {
     <nav
       className="md:hidden fixed bottom-0 left-0 right-0 flex items-center justify-around border-t z-[100]"
       style={{
-        height: "64px",
+        height: "56px",
         background: "var(--hs-bg-surface)",
         borderColor: "var(--hs-border)",
       }}
@@ -51,8 +51,10 @@ export default function MobileTabBar(): React.ReactElement {
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className="flex flex-col items-center justify-center gap-0.5 min-w-[44px] min-h-[44px] px-2 py-1 rounded-[var(--hs-radius-element)] transition-colors duration-[var(--hs-duration-micro)]"
+            className="flex flex-col items-center justify-center gap-0.5 min-w-[44px] min-h-[44px] px-2 py-1 transition-colors"
             style={{
+              borderRadius: "var(--hs-radius-element)",
+              transitionDuration: "var(--hs-duration-micro)",
               color: isActive
                 ? "var(--hs-accent-dark)"
                 : "var(--hs-text-muted)",
@@ -66,7 +68,7 @@ export default function MobileTabBar(): React.ReactElement {
               {item.emoji}
             </span>
             <span
-              className="text-[10px] font-[800] tracking-[0.08em] leading-none"
+              className="text-[10px] font-bold leading-none"
             >
               {item.label}
             </span>

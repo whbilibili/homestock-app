@@ -25,7 +25,6 @@ export default function ItemList({ items, onItemClick }: ItemListProps): ReactEl
         <span className="text-5xl" aria-hidden="true">📦</span>
         <p
           className="text-lg font-bold"
-          style={{ fontFamily: "var(--font-noto-serif-jp), serif" }}
         >
           还没有物品
         </p>

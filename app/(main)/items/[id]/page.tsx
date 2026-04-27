@@ -131,11 +131,11 @@ export default function ItemDetailPage(): React.ReactElement {
     "w-full",
     "bg-[var(--hs-bg-surface)]",
     "border border-[var(--hs-border)]",
-    "rounded-[var(--hs-radius-element)]",
+    "rounded-[var(--hs-radius-control)]",
     "px-3.5 py-2.5",
     "text-sm text-[var(--hs-text)]",
     "transition-[border-color,box-shadow] duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
-    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_rgba(16,185,129,0.15)]",
+    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]",
     "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--hs-bg-canvas)]",
   ].join(" ");
 
@@ -143,11 +143,11 @@ export default function ItemDetailPage(): React.ReactElement {
     "w-full",
     "bg-[var(--hs-bg-surface)]",
     "border border-[var(--hs-border)]",
-    "rounded-[var(--hs-radius-element)]",
+    "rounded-[var(--hs-radius-control)]",
     "px-3.5 py-2.5",
     "text-sm text-[var(--hs-text)]",
     "transition-[border-color,box-shadow] duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
-    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_rgba(16,185,129,0.15)]",
+    "focus:outline-none focus:border-[var(--hs-accent)] focus:shadow-[0_0_0_3px_var(--hs-accent-subtle)]",
     "disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-[var(--hs-bg-canvas)]",
     "cursor-pointer",
   ].join(" ");
@@ -155,16 +155,8 @@ export default function ItemDetailPage(): React.ReactElement {
   // ── 加载态 ──
   if (item === undefined) {
     return (
-      <div className="py-6 max-w-2xl mx-auto">
-        <div className="h-8 w-48 bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-element)] animate-pulse mb-6" />
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div
-              key={`skeleton-${i}`}
-              className="h-12 bg-[var(--hs-bg-surface)] border border-[var(--hs-border)] rounded-[var(--hs-radius-element)] animate-pulse"
-            />
-          ))}
-        </div>
+      <div className="flex items-center justify-center py-16">
+        <div className="w-8 h-8 border-2 border-[var(--hs-border)] border-t-[var(--hs-accent)] rounded-full" style={{ animation: "spin 0.8s linear infinite" }} />
       </div>
     );
   }
@@ -251,7 +243,7 @@ export default function ItemDetailPage(): React.ReactElement {
         </div>
         <span
           className={[
-            "text-[10px] font-extrabold tracking-widest uppercase",
+            "text-[10px] font-bold tracking-wide",
             "px-2.5 py-1",
             "rounded-[var(--hs-radius-pill)]",
             stockStatus.colorClass,
@@ -264,7 +256,7 @@ export default function ItemDetailPage(): React.ReactElement {
 
       {/* 库存数量摘要（只读） */}
       <div className="mb-6 p-4 bg-[var(--hs-bg-canvas)] rounded-[var(--hs-radius-control)]">
-        <p className="text-xs font-semibold text-[var(--hs-text-muted)] mb-1">当前库存</p>
+        <p className="text-xs font-medium text-[var(--hs-text-muted)] mb-1">当前库存</p>
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-bold text-[var(--hs-text)]">{item.quantity}</span>
           <span className="text-sm text-[var(--hs-text-muted)]">{item.unit}</span>
@@ -283,7 +275,7 @@ export default function ItemDetailPage(): React.ReactElement {
             onClick={() => handleTabChange(tab.key)}
             className={[
               "flex items-center gap-1.5 px-4 py-2",
-              "text-sm font-semibold",
+              "text-sm font-medium",
               "rounded-[var(--hs-radius-control)]",
               "transition-all duration-[var(--hs-duration-micro)] ease-[var(--hs-ease)]",
               "cursor-pointer",
@@ -312,7 +304,7 @@ export default function ItemDetailPage(): React.ReactElement {
               {/* 名称（编辑模式） */}
               {isEditing && (
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="edit-name" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                  <label htmlFor="edit-name" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                     物品名称
                   </label>
                   <input
@@ -327,7 +319,7 @@ export default function ItemDetailPage(): React.ReactElement {
 
               {/* 分类 */}
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="edit-category" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                <label htmlFor="edit-category" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                   分类
                 </label>
                 <select
@@ -347,7 +339,7 @@ export default function ItemDetailPage(): React.ReactElement {
 
               {/* 单位 */}
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="edit-unit" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                <label htmlFor="edit-unit" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                   单位
                 </label>
                 <input
@@ -362,7 +354,7 @@ export default function ItemDetailPage(): React.ReactElement {
 
               {/* 低库存警戒线 */}
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="edit-threshold" className="text-xs font-semibold tracking-wide text-[var(--hs-text)]">
+                <label htmlFor="edit-threshold" className="text-xs font-medium tracking-wide text-[var(--hs-text)]">
                   低库存警戒线
                 </label>
                 <input
@@ -391,7 +383,7 @@ export default function ItemDetailPage(): React.ReactElement {
 
             {/* 错误提示 */}
             {error && (
-              <p className="mt-4 text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-element)]">
+              <p className="mt-4 text-sm text-[var(--hs-error)] bg-[var(--hs-error-bg)] px-3 py-2 rounded-[var(--hs-radius-control)]">
                 ⚠️ {error}
               </p>
             )}
